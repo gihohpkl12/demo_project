@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:replace="~{fragments.html :: head}"></head>
+
+<body class="dashboard dashboard_1">
+<div class="full_container">
+    <div class="inner_container">
+        <!-- Sidebar  -->
+        <nav th:replace="~{fragments.html :: side-bar}"></nav>
+        <!-- end sidebar -->
+
+        <!-- right content -->
+        <div id="content">
+            <!-- topbar -->
+            <div th:replace="~{fragments.html :: top-bar}"></div>
+            <!-- end topbar -->
+
+            <!-- dashboard inner -->
+            <div class="midde_cont">
+                <div class="container-fluid">
+                    <div class="row column_title">
+                        <div class="col-md-12">
+                            <div class="page_title">
+                                <h2>Movie Site</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row column2 graph margin_bottom_30">
+                        <div class="col-md-l2 col-lg-12">
+                            <div class="white_shd full" style="heigth:100%;">
+                                <div class="full graph_revenue" style="height:564px; width:100%">
+                                    <div style="background-image:URL(img/hero/endgame.jpg); height:100%; width:100%; background-position: center;background-repeat: no-repeat;
+">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- footer -->
+               <div th:replace="~{fragments.html :: footer}"></div>
+            </div>
+            <!-- end dashboard inner -->
+        </div>
+    </div>
+</div>
+<div th:replace="~{fragments.html :: default-script}"></div>
+<div th:replace="~{fragments.html :: alert-message}"></div>
+</body>
+</html>

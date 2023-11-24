@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:replace="~{fragments.html :: head}"></head>
+
+<body class="inner_page tables_page">
+<div class="full_container">
+    <div class="inner_container">
+        <!-- Sidebar  -->
+        <nav th:replace="~{fragments.html :: side-bar}"></nav>
+        <!-- end sidebar -->
+        <!-- right content -->
+        <div id="content">
+            <!-- topbar -->
+            <div th:replace="~{fragments.html :: top-bar}"></div>
+            <!-- end topbar -->
+            <!-- dashboard inner -->
+            <div class="midde_cont">
+                <div class="container-fluid">
+                    <div class="row column_title">
+                        <div class="col-md-12">
+                            <div class="page_title">
+                                <h2>Board</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- row -->
+                    <div class="row">
+                        <!-- table section -->
+                        <div class="col-md-12">
+                            <div class="white_shd full margin_bottom_30">
+                                <div class="full graph_head">
+                                    <div class="heading1 margin_0">
+                                        <h2 th:text="${board.boardName}"></h2>
+                                    </div>
+                                    <div style="float:right; ">
+                                        <a th:href="@{/add-post?id={id}&boardName={boardName} (id=${board.id}, boardName=${board.boardName})}" class="btn cur-p btn-outline-dark">작성</a>
+                                    </div>
+                                </div>
+                                <div class="table_section padding_infor_info">
+                                    <div class="table-responsive-sm">
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>제목</th>
+                                                <th>닉네임</th>
+                                                <th>작성 시간</th>
+                                                <th>조회수</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="post : ${postMetadata}">
+                                                <td th:text="${post.id}" style="cursor:pointer;" th:onclick="|location.href='@{/post?id={id}&boardName={boardName}&boardId={boardId}&page={page}&size={size}&sort=createDate,desc(id=${post.id},boardName=${board.boardName}, boardId=${board.id}, page=${page}, size=${size})}'|">1</td>
+                                                <td th:text="${post.subject}" style="cursor:pointer;" th:onclick="|location.href='@{/post?id={id}&boardName={boardName}&boardId={boardId}&page={page}&size={size}&sort=createDate,desc(id=${post.id},boardName=${board.boardName}, boardId=${board.id}, page=${page}, size=${size})}'|">1</td>
+                                                <td th:text="${post.poster}" style="cursor:pointer;" th:onclick="|location.href='@{/post?id={id}&boardName={boardName}&boardId={boardId}&page={page}&size={size}&sort=createDate,desc(id=${post.id},boardName=${board.boardName}, boardId=${board.id}, page=${page}, size=${size})}'|">1</td>
+                                                <td th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd')}"  style="cursor:pointer;" th:onclick="|location.href='@{/post?id={id}&boardName={boardName}&boardId={boardId}&page={page}&size={size}&sort=createDate,desc(id=${post.id},boardName=${board.boardName}, boardId=${board.id}, page=${page}, size=${size})}'|">1</td>
+                                                <td th:text="${post.viewCount}"  style="cursor:pointer;" th:onclick="|location.href='@{/post?id={id}&boardName={boardName}&boardId={boardId}&page={page}&size={size}&sort=createDate,desc(id=${post.id},boardName=${board.boardName}, boardId=${board.id}, page=${page}, size=${size})}'|">1</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <div>
+
+                                            <div th:if="${page == 0}" class="btn-group mr-2" role="group" aria-label="First group">
+                                                <div th:if="${next}">
+                                                    <a class="btn cur-p btn-outline-dark" th:href="@{/board?id={id}&boardName={boardName}&size={size}&page={page}&sort=createDate,desc (id=${board.id}, boardName=${board.boardName}, size=${size}, page=${page+1})}">다음</a>
+                                                </div>
+                                            </div>
+
+                                            <div th:if="${page &gt; 0}" class="btn-group mr-2" role="group" aria-label="First group">
+                                                <a class="btn cur-p btn-outline-dark" th:href="@{/board?id={id}&boardName={boardName}&size={size}&page={page}&sort=createDate,desc (id=${board.id}, boardName=${board.boardName}, size=${size}, page=${page-1})}">이전</a>
+                                                <div th:if="${next}">
+                                                    <a class="btn cur-p btn-outline-dark" style="margin-left:5px;" th:href="@{/board?id={id}&boardName={boardName}&size={size}&page={page}&sort=createDate,desc (id=${board.id}, boardName=${board.boardName}, size=${size}, page=${page+1})}">다음</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- footer -->
+                <div class="container-fluid">
+                    <div class="footer">
+                        <p>Copyright © 2018 Designed by html.design. All rights reserved.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- end dashboard inner -->
+        </div>
+    </div>
+    <!-- model popup -->
+    <!-- The Modal -->
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Modal Heading</h4>
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                    Modal body..
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end model popup -->
+</div>
+<div th:replace="~{fragments.html :: default-script}"></div>
+<div th:replace="~{fragments.html :: alert-message}"></div>
+
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+	  xmlns="http://www.w3.org/1999/html">
+<head th:replace="fragments.html :: head"></head>
+
+<body>
+	<div id="preloder">
+		<div class="loader"></div>
+	</div>
+
+	<section class="login spad">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="login__form">
+						<h3>Login</h3>
+						<form th:action="@{/sign-in}" id="formPost" method="post">
+							<div class="input__item">
+								<input type="text" id="email" name="email" placeholder="Email" > <span class="icon_profile"></span>
+							</div>
+							<div class="input__item">
+								<input type="password" id="password" name="password" placeholder="Password" maxlength="14"> <span class="icon_lock"></span>
+							</div>
+							<button type="submit" id="submitButton" class="site-btn">Login Now</button>
+
+						</form>
+						<span>
+							<a href="find" class="forget_pass">Forgot Your Password?</a>
+						</span>
+
+					</div>
+
+					<div class="login__register" style="margin-top:20px; margin-left:115px">
+						<a href="/naver/sign-in" class="primary-btn">NAVER LOGIN</a>
+					</div>
+
+				</div>
+				<div class="col-lg-6">
+					<div class="login__register">
+						<h3>계정이 없으신가요?</h3>
+						<a href="join" class="primary-btn">Register</a>
+						<a href="/" class="primary-btn">Home</a>
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</section>
+	<th:block th:replace="fragments.html :: alert-message"></th:block>
+	<footer th:replace="fragments.html :: footer"></footer>
+	<th:block th:replace="fragments.html :: default-script"></th:block>
+</body>
+
+</html>

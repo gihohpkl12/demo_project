@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity">
+
+<head th:replace="~{fragments.html :: head}"></head>
+<head>
+    <script src="/js/ckeditor/build/ckeditor.js"></script>
+    <style>
+        .ck-editor__editable_inline {
+            min-height: 400px;
+        }
+    </style>
+    <div th:replace="~{fragments.html :: csrf-meta}"></div>
+
+</head>
+
+<body class="inner_page profile_page">
+<div class="full_container">
+    <div class="inner_container">
+        <!-- Sidebar  -->
+
+        <nav th:replace="~{fragments.html :: side-bar}" class="ps ps--active-y"></nav>
+        <!-- end sidebar -->
+        <!-- right content -->
+        <div id="content">
+            <!-- topbar -->
+            <div th:replace="~{fragments.html :: top-bar}"></div>
+            <!-- end topbar -->
+            <!-- dashboard inner -->
+            <div class="midde_cont">
+                <div class="container-fluid">
+                    <div class="row column_title">
+                        <div class="col-md-12">
+                            <div class="page_title">
+                                <h2>Detail</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- row -->
+                    <div class="row column1">
+
+                        <div class="col-md-12">
+                            <div class="white_shd full margin_bottom_30">
+                                <div class="full graph_head">
+                                    <div class="heading1 margin_0">
+                                        <h2>Post</h2>
+                                    </div>
+                                </div>
+                                <div class="full price_table padding_infor_info">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="full dis_flex center_text" style="width:100%; height:100%;">
+                                                <form th:action="@{/post-edit}" th:object="${postForm}" method="post" style="width:100%; height:500px;">
+                                                    <th:block th:if="${subject}">
+                                                        <input type="text" name="subject" style="width:100%" placeholder="제목을 입력하세요" th:value="${subject}">
+                                                    </th:block>
+                                                    <th:block th:unless="${subject}">
+                                                        <input type="text" name="subject" style="width:100%" placeholder="제목을 입력하세요">
+                                                    </th:block>
+                                                    <input type="hidden" name="boardId" th:value="${boardId}">
+                                                    <input type="hidden" name="boardName" th:value="${boardName}">
+                                                    <input type="hidden" name="postMetaDataId" th:value="${postInfo.id}">
+                                                    <input type="hidden" name="poster" th:value="${#authentication.principal.nickname}">
+                                                    <input type="hidden" name="accountId" th:value="${#authentication.principal.id}">
+                                                    <input type="hidden" name="page" th:value="${page}">
+                                                    <input type="hidden" name="size" th:value="${size}">
+<!--                                                    <div th:if="${type}">-->
+<!--                                                        <input type="hidden" name="type" th:value="${type}">-->
+<!--                                                    </div>-->
+
+                                                    <textarea name="postContent" class="form-control" id="postContent" th:utext="${content}"></textarea>
+
+<!--                                                    <th:block th:if="${content}">-->
+<!--                                                        <textarea name="postContent" class="form-control" id="postContent" th:utext="${content}"></textarea>-->
+<!--                                                    </th:block>-->
+
+<!--                                                    <th:block th:unless="${content}">-->
+<!--                                                        <textarea name="postContent" class="form-control" id="postContent" ></textarea>-->
+<!--                                                    </th:block>-->
+
+                                                    <button class="btn btn-primary">저장</button>
+                                                </form>
+                                                <script>
+                                                    ClassicEditor.create( document.querySelector( '#postContent' ), {
+                                                        language: "ko",
+                                                        ckfinder : {
+                                                            uploadUrl: "/image-input",
+                                                            withCredentials: true,
+                                                        }
+
+                                                    } );
+<!--                                                    ClassicEditor-->
+<!--                                                        .create( document.querySelector( '#ckContents' ), {-->
+<!--                                                            plugins: [ SimpleUploadAdapter],-->
+<!--                                                            simpleUpload: {-->
+<!--                                                                uploadUrl: '/image2',-->
+<!--                                                                withCredentials: true,-->
+<!--                                                                headers: {-->
+<!--                                                                    'X-CSRF-TOKEN': 'CSRF-Token',-->
+<!--&lt;!&ndash;                                                                    Authorization: 'Bearer <JSON Web Token>'&ndash;&gt;-->
+<!--                                                                }-->
+<!--                                                            }-->
+<!--                                                        } );-->
+                                                </script>
+
+                                            </div>
+                                        </div>
+<!--                                        <div id="se2_sample" style="margin:10px 0;">-->
+<!--                                            <input type="button" onclick="save();" value="저장">-->
+<!--                                        </div>-->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        <!-- end row -->
+                    </div>
+                    <!-- footer -->
+                    <div class="container-fluid">
+                        <div class="footer">
+                            <p>Copyright © 2018 Designed by html.design. All rights reserved.<br><br>
+                                Distributed By: <a href="https://themewagon.com/">ThemeWagon</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- end dashboard inner -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div th:replace="~{fragments.html :: default-script}"></div>
+<div th:replace="~{fragments.html :: alert-message}"></div>
+
+</body>
+
+</html>
+

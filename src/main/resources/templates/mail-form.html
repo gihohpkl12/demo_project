@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>비밀번호 찾기</title>
+</head>
+<body>
+<div>
+    <p>
+        안녕하세요.
+        <div th:text="${email}"></div>로 비밀번호 변경 요청이 있었습니다.
+    </p>
+
+    <div>
+        <p>아래의 토큰을 입력하세요.</p>
+        <small th:text="${token}"></small>
+    </div>
+</div>
+<footer>
+    <small>Simple-movie&copy; 2023</small>
+</footer>
+</body>
+</html>

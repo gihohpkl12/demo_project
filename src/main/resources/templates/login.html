@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:replace="~{fragments.html :: head}"></head>
+<body class="inner_page login">
+<div class="full_container">
+    <div class="container">
+        <div class="center verticle_center full_height">
+            <div class="login_section">
+                <div class="logo_login">
+                    <div class="center">
+                    </div>
+                </div>
+                <div class="login_form">
+                    <form th:action="@{/sign-in}" method="post">
+                        <fieldset>
+                            <div class="field" >
+                                <label class="label_field">Email Address</label>
+                                <input type="text" name="email" placeholder="E-mail">
+                            </div>
+
+                            <div class="field">
+                                <label class="label_field">Password</label>
+                                <input type="password" name="password" placeholder="Password" maxlength="4">
+                            </div>
+                            <div class="field">
+                                <label class="label_field hidden">hidden label</label>
+                                <a class="forgot" href="/password-find-init">Forgotten Password?</a>
+                                <a class="forgot" style="margin-right:20px" href="/naver/sign-in">Naver Login?</a>
+                            </div>
+                            <div class="field margin_0">
+                                <label class="label_field hidden">hidden label</label>
+                                <button class="main_bt">Sing In</button>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="~{fragments.html :: non-sidebar-script}"></div>
+<div th:replace="~{fragments.html :: alert-message}"></div>
+
+</body>
+</html>

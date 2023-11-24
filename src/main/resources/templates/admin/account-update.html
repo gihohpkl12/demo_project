@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:replace="~{/admin/admin-fragments.html :: csrf-head}"></head>
+
+<body class="inner_page login">
+<div class="full_container">
+    <div class="container">
+        <div class="center verticle_center full_height">
+            <div class="login_section">
+                <div class="login_form">
+                    <div th:unless="${close_message}">
+                        <form>
+                            <div class="field">
+                                <label class="label_field">ID</label>
+                                <input type="text" name="id" th:value="${account.id}" readonly>
+                            </div>
+
+                            <div class="field">
+                                <label class="label_field">EMAIL</label>
+                                <input type="text" name="email" th:value="${account.email}" readonly>
+                            </div>
+
+                            <div class="field">
+                                <label class="label_field">NICKNAME</label>
+                                <input type="text" name="nickname" th:value="${account.nickname}" readonly>
+                            </div>
+
+                            <div class="field">
+                                <label class="label_field">TYPE</label>
+                                <input type="text" name="type" th:value="${account.type}" readonly>
+                            </div>
+
+                            <div class="field">
+                                <label class="label_field">JOIN</label>
+                                <input type="text" name="joinDate" th:value="${account.joinDate}" readonly>
+                            </div>
+
+                            <div class="field">
+                                <label class="label_field">PW CHANGE</label>
+                                <input type="text" name="lastPasswordChangeDate" th:value="${account.lastPasswordChangeDate}" readonly>
+                            </div>
+
+                            <div class="field">
+                                <label class="label_field">ROLE</label>
+                                <div style="display:inline;">
+                                    <select name="role">
+                                        <div th:each="role : ${roles}">
+                                            <option th:if="${account.role} and ${#strings.equals(account.role, role.role)}" th:text="${role.role}" th:value="${role.id}" selected></option>
+                                            <option th:if="${account.role} and ${!#strings.equals(account.role, role.role)}" th:text="${role.role}" th:value="${role.id}"></option>
+                                        </div>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <label class="label_field hidden">hidden label</label>
+                            <button class="btn cur-p btn-outline-success" onclick="send()">SAVE</button>
+                        </form>
+                        <script>
+                            function send() {
+                                var token = $("meta[name='_csrf']").attr("content");
+                                var header = $("meta[name='_csrf_header']").attr("content");
+
+                                var sendData = {
+                                    "id":$('input[name=id]').val(),
+                                    "role":$('select[name=role]').val(),
+                                    "email":$('input[name=email]').val(),
+                                };
+
+
+                                $.ajax({
+                                    type: 'post',
+                                    contentType: "application/json",
+                                    url:'/admin/account/user-update',
+                                    data: JSON.stringify(sendData), // String -> json 형태로 변환
+                                    beforeSend : function(xhr) {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+                                        xhr.setRequestHeader(header, token);
+                                    },
+                                    async: false, //동기, 비동기 여부
+                                    cache :false, // 캐시 여부
+                                    success: function(data){
+                                        alert(data);
+                                        opener.parent.location.reload();
+                                        window.close();
+                                    },
+                                    error:function(xhr,status,error){
+                                        alert("관리자에게 문의해주시기 바랍니다 ");
+                                        window.close();
+                                    }
+                                });
+                            }
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="~{/admin/admin-fragments.html :: non-sidebar-script}"></div>
+<div th:replace="~{/admin/admin-fragments.html :: close-message}"></div>
+<div th:replace="~{/admin/admin-fragments.html :: alert-message}"></div>
+</body>
+</html>

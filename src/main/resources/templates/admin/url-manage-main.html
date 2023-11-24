@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html lang="en">
+<head th:replace="~{/admin/admin-fragments.html :: head}"></head>
+
+<body class="inner_page tables_page">
+<div class="full_container">
+    <div class="inner_container">
+        <!-- Sidebar  -->
+        <nav th:replace="~{/admin/admin-fragments.html :: side-bar}"></nav>
+        <!-- end sidebar -->
+        <!-- right content -->
+        <div id="content">
+            <!-- topbar -->
+            <div th:replace="~{/admin/admin-fragments.html :: top-bar}"></div>
+            <!-- end topbar -->
+            <!-- dashboard inner -->
+            <div class="midde_cont">
+                <div class="container-fluid">
+                    <div class="row column_title">
+                        <div class="col-md-12">
+                            <div class="page_title">
+                                <h2>URL</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- row -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="white_shd full margin_bottom_30">
+                                <div class="full graph_head">
+                                    <div class="heading1 margin_0">
+                                        <h2>Url manage</h2>
+                                    </div>
+                                    <div style="float:right;">
+                                        <!--                                        <a class="btn cur-p btn-outline-dark" th:attr="onclick=|window.open('@{/admin/url/url-add}','name','resizable=no width=600 height=500');return true|">추가</a>-->
+                                        <a class="btn cur-p btn-outline-dark" onclick="urlAdd()">추가</a>
+                                        <script>
+                                            function urlAdd() {
+                                                window.open('/admin/url/url-add','name','resizable=no, width=600, height=500, location=no');
+                                            }
+
+                                        </script>
+
+                                        <a class="btn cur-p btn-outline-dark" href="/admin/url/url-reflect">반영</a>
+                                    </div>
+                                </div>
+                                <div class="table_section padding_infor_info">
+                                    <div class="table-responsive-sm">
+                                        <table class="table">
+                                            <thead class="thead-dark">
+                                            <tr>
+                                                <th style="text-align : center;">ID</th>
+                                                <th style="text-align : center;">URL</th>
+                                                <th style="text-align : center;">ROLE</th>
+                                                <th style="text-align : center;">관리</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+
+
+                                            <tr>
+                                                <td style="width:15%; text-align : center;"> -1000</td>
+                                                <td style="width:35%; ">error test</td>
+                                                <td style="width:30%;">error test</td>
+                                                <td style="width:20%; text-align : center;">
+                                                    <div style="display:inline;">
+                                                            <span>
+                                                                <form th:action="@{/admin/url/url-delete}"
+                                                                      method="post" style="display:inline;">
+                                                                    <button class="btn cur-p btn-outline-danger">삭제</button>
+                                                                </form>
+                                                                <a class="btn cur-p btn-outline-dark"
+                                                                   th:attr="onclick=|window.open('@{/admin/url/url-update?id=1111}','name','resizable=no width=600 height=500');return false|">관리</a>
+                                                            </span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+
+                                            <div th:each="url : ${urls}">
+                                                <tr>
+                                                    <td style="width:15%; text-align : center;"
+                                                        th:text="${url.id}"></td>
+                                                    <td style="width:35%; " th:text="${url.path}">Anna</td>
+                                                    <td th:if="${url.role}" style="width:30%; "
+                                                        th:text="${url.role.role}">Pitt
+                                                    </td>
+                                                    <td th:unless="${url.role}" style="width:30%;">null</td>
+                                                    <td style="width:20%; text-align : center;">
+                                                        <div style="display:inline;">
+                                                                <span>
+                                                                    <form th:action="@{/admin/url/url-delete}"
+                                                                          method="post" style="display:inline;">
+                                                                        <input type="hidden" name="id"
+                                                                               th:value="${url.id}">
+                                                                        <input type="hidden" name="path"
+                                                                               th:value="${url.path}">
+                                                                        <input th:if="${url.role}" type="hidden"
+                                                                               name="role" th:value="${url.role.role}">
+                                                                        <button class="btn cur-p btn-outline-danger">삭제</button>
+                                                                    </form>
+                                                                    <a class="btn cur-p btn-outline-dark"
+                                                                       th:attr="onclick=|window.open('@{/admin/url/url-update?id={id} (id=${url.id})}','name','resizable=no width=600 height=500');return false|">관리</a>
+                                                                </span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </div>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- footer -->
+                <div class="container-fluid">
+                    <div class="footer">
+                        <p>Copyright © 2018 Designed by html.design. All rights reserved.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- end dashboard inner -->
+        </div>
+    </div>
+    <!-- model popup -->
+    <!-- The Modal -->
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Modal Heading</h4>
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                    Modal body..
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end model popup -->
+</div>
+<div th:replace="~{/admin/admin-fragments.html :: default-script}"></div>
+<div th:replace="~{/admin/admin-fragments.html :: alert-message}"></div>
+</body>
+</html>

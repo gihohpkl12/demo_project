@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<header class="header" th:fragment="header"></header>
+    <div th:fragment="top-bar" class="topbar">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="full">
+                <button type="button" id="sidebarCollapse" class="sidebar_toggle"><i class="fa fa-bars"></i>
+                </button>
+
+                <div class="right_topbar">
+                    <div class="icon_info">
+                        <ul>
+                            <li>
+                                <a sec:authorize="isAuthenticated()" href="#">
+                                    <i class="fa fa-bell-o"></i>
+                                    <span class="badge" th:text="${alarmCount}">1</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="user_profile_dd">
+                            <li>
+                                <a sec:authorize="isAuthenticated()" class="dropdown-toggle" data-toggle="dropdown"
+                                   aria-expanded="false">
+                                    <span class="name_user" th:text="${#authentication.principal.nickname}">John David</span>
+                                </a>
+
+                                <a sec:authorize="isAnonymous()" class="dropdown-toggle" aria-expanded="false" href="/sign-in">
+                                    <span class="name_user">GUEST</span>
+                                </a>
+
+                                <div sec:authorize="isAuthenticated()" class="dropdown-menu">
+                                    <a class="dropdown-item" href="/mypage">My Profile</a>
+
+
+                                    <a class="dropdown-item" href="/logout"><span>Log Out</span> <i
+                                            class="fa fa-sign-out"></i></a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <th:block th:fragment="csrf-meta">
+        <meta name="_csrf" th:content="${_csrf.token}"/>
+        <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    </th:block>
+
+
+    <nav th:fragment="side-bar" id="sidebar" class="ps">
+
+        <div class="sidebar_blog_2">
+            <h4><a href="/" style="color:white;">General</a></h4>
+            <ul class="list-unstyled components">
+                <li class="active">
+                    <a href="/">
+                        <i class="fa fa-dashboard yellow_color"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/recent-movie">
+                        <i class="fa fa-clock-o orange_color"></i>
+                        <span>Recent Movie</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#element" data-toggle="collapse" aria-expanded="false"
+                       class="dropdown-toggle collapsed"><i class="fa fa-table purple_color2"></i>
+                        <span>Board</span>
+                    </a>
+                    <ul class="list-unstyled collapse" id="element" style="">
+                        <li th:each="board : ${boards}">
+                            <a th:href="@{/board?id={id}&boardName={boardName}&size=10&page=0&sort=createDate,desc (id=${board.id}, boardName=${board.boardName})}">
+                                &gt;<span th:text="${board.boardName}"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li sec:authorize="isAnonymous()">
+                    <a href="/sign-in">
+                        <i class="fa fa-paper-plane red_color"></i>
+                        <span>SIGN IN</span>
+                    </a>
+                </li>
+
+                <li sec:authorize="isAnonymous()">
+                    <a href="/sign-up">
+                        <i class="fa fa-clone yellow_color"></i>
+                        <span>SIGN UP</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a sec:authorize="isAuthenticated()" href="/mypage">
+                        <i class="fa fa-cog yellow_color"></i>
+                        <span>My page</span>
+                    </a>
+                </li>
+
+                <li sec:authorize="isAuthenticated()">
+                    <a onClick="movieSearch();" style="cursor:pointer;">
+                        <i class="fa fa-clone yellow_color"></i>
+                        <span>Search</span>
+                    </a>
+                    <script>
+                        function movieSearch() {
+                            var result = prompt("검색어를 입력하세요", "");
+
+                           if(result != null & result.length > 0) {
+                                var url = '/search?keyword=' + result;
+                                location.replace(url);
+                            } else {
+                                alert("검색어를 입력하세요");
+                            }
+                        }
+                    </script>
+                </li>
+
+            </ul>
+        </div>
+        <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
+            <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+        </div>
+        <div class="ps__rail-y" style="top: 0px; right: 0px;">
+            <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div>
+        </div>
+        <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
+            <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+        </div>
+        <div class="ps__rail-y" style="top: 0px; right: 0px;">
+            <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div>
+        </div>
+        <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
+            <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+        </div>
+        <div class="ps__rail-y" style="top: 0px; right: 0px; height: 803px;">
+            <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 704px;"></div>
+        </div>
+        <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
+            <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+        </div>
+        <div class="ps__rail-y" style="top: 0px; right: 0px; height: 803px;">
+            <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 704px;"></div>
+        </div>
+        <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
+            <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+        </div>
+        <div class="ps__rail-y" style="top: 0px; right: 0px;">
+            <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div>
+        </div>
+        <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
+            <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+        </div>
+        <div class="ps__rail-y" style="top: 0px; right: 0px;">
+            <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div>
+        </div>
+        <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
+            <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+        </div>
+        <div class="ps__rail-y" style="top: 0px; right: 0px;">
+            <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div>
+        </div>
+        <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
+            <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+        </div>
+        <div class="ps__rail-y" style="top: 0px; right: 0px;">
+            <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div>
+        </div>
+    </nav>
+
+
+
+<head th:fragment="head">
+    <!-- basic -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- mobile metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <!-- site metas -->
+    <title>Pluto - Responsive Bootstrap Admin Panel Templates</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- site icon -->
+    <link rel="icon" href="/images/fevicon.png" type="image/png">
+    <!-- bootstrap css -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <!-- site css -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- responsive css -->
+    <link rel="stylesheet" href="/css/responsive.css">
+    <!-- color css -->
+<!--    <link rel="stylesheet" href="/css/colors.css">-->
+    <!-- select bootstrap -->
+    <link rel="stylesheet" href="/css/bootstrap-select.css">
+    <!-- scrollbar css -->
+    <link rel="stylesheet" href="/css/perfect-scrollbar.css">
+    <!-- custom css -->
+    <link rel="stylesheet" href="/css/custom.css">
+
+<!--    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>-->
+<!--    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>-->
+
+
+        <style type="text/css">/* Chart.js */
+    @-webkit-keyframes chartjs-render-animation{from{opacity:0.99}to{opacity:1}}@keyframes chartjs-render-animation{from{opacity:0.99}to{opacity:1}}.chartjs-render-monitor{-webkit-animation:chartjs-render-animation 0.001s;animation:chartjs-render-animation 0.001s;}
+        </style>
+        <style type="text/css">/* Chart.js */
+    @-webkit-keyframes chartjs-render-animation{from{opacity:0.99}to{opacity:1}}@keyframes chartjs-render-animation{from{opacity:0.99}to{opacity:1}}.chartjs-render-monitor{-webkit-animation:chartjs-render-animation 0.001s;animation:chartjs-render-animation 0.001s;}
+        </style>
+        <style type="text/css">/* Chart.js */
+    @-webkit-keyframes chartjs-render-animation{from{opacity:0.99}to{opacity:1}}@keyframes chartjs-render-animation{from{opacity:0.99}to{opacity:1}}.chartjs-render-monitor{-webkit-animation:chartjs-render-animation 0.001s;animation:chartjs-render-animation 0.001s;}
+        </style>
+        <style type="text/css">/* Chart.js */
+    @-webkit-keyframes chartjs-render-animation{from{opacity:0.99}to{opacity:1}}@keyframes chartjs-render-animation{from{opacity:0.99}to{opacity:1}}.chartjs-render-monitor{-webkit-animation:chartjs-render-animation 0.001s;animation:chartjs-render-animation 0.001s;}
+        </style>
+        <style type="text/css">/* Chart.js */
+    @-webkit-keyframes chartjs-render-animation{from{opacity:0.99}to{opacity:1}}@keyframes chartjs-render-animation{from{opacity:0.99}to{opacity:1}}.chartjs-render-monitor{-webkit-animation:chartjs-render-animation 0.001s;animation:chartjs-render-animation 0.001s;}
+        </style>
+        <style type="text/css">/* Chart.js */
+    @-webkit-keyframes chartjs-render-animation{from{opacity:0.99}to{opacity:1}}@keyframes chartjs-render-animation{from{opacity:0.99}to{opacity:1}}.chartjs-render-monitor{-webkit-animation:chartjs-render-animation 0.001s;animation:chartjs-render-animation 0.001s;}
+        </style>
+        <style type="text/css">/* Chart.js */
+    @-webkit-keyframes chartjs-render-animation{from{opacity:0.99}to{opacity:1}}@keyframes chartjs-render-animation{from{opacity:0.99}to{opacity:1}}.chartjs-render-monitor{-webkit-animation:chartjs-render-animation 0.001s;animation:chartjs-render-animation 0.001s;}
+        </style>
+        <style type="text/css">/* Chart.js */
+    @-webkit-keyframes chartjs-render-animation{from{opacity:0.99}to{opacity:1}}@keyframes chartjs-render-animation{from{opacity:0.99}to{opacity:1}}.chartjs-render-monitor{-webkit-animation:chartjs-render-animation 0.001s;animation:chartjs-render-animation 0.001s;}
+        </style>
+
+</head>
+
+<th:block th:fragment="non-sidebar-script">
+    <!--    <script src="js/analyser.js"></script>-->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/animate.js"></script>
+    <script src="js/bootstrap-select.js"></script>
+    <script src="js/owl.carousel.js"></script>
+    <script src="js/utils.js"></script>
+<!--    <script src="js/perfect-scrollbar.min.js"></script>-->
+
+<!--    <script src="js/custom.js"></script>-->
+</th:block>
+
+<th:block th:fragment="default-script">
+<!--    <script src="js/analyser.js"></script>-->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/animate.js"></script>
+    <script src="js/bootstrap-select.js"></script>
+    <script src="js/owl.carousel.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/perfect-scrollbar.min.js"></script>
+
+<!--    <script src="js/Chart.min.js"></script>-->
+<!--    <script src="js/Chart.bundle.min.js"></script>-->
+<!--    <script src="js/chart_custom_style1.js"></script>-->
+<!--    <script src="js/analyser.js"></script>-->
+    <script>
+         var ps = new PerfectScrollbar('#sidebar');
+    </script>
+    <script src="js/custom.js"></script>
+</th:block>
+
+<footer class="footer" th:fragment="footer">
+    <div class="container-fluid">
+        <div class="footer">
+            <p>Copyright © 2018 Designed by html.design. All rights reserved.<br><br>
+                Distributed By: <a href="https://themewagon.com/">ThemeWagon</a>
+            </p>
+        </div>
+    </div>
+</footer>
+
+<!--<div class="search-model" th:fragment="search">-->
+<!--    <div class="h-100 d-flex align-items-center justify-content-center">-->
+<!--        <div class="search-close-switch">-->
+<!--            <i class="icon_close"></i>-->
+<!--        </div>-->
+<!--        <form th:action="@{/search}" class="search-model-form" method="post">-->
+<!--            <div class="search-item">-->
+<!--                <input type="text" id="actor" name="actor" placeholder="Search Actor here">-->
+<!--                <input type="text" id="title" name="title" placeholder="Search Title here">-->
+<!--                <input type="text" id="director" name="director" placeholder="Search Director here">-->
+<!--            </div>-->
+
+<!--            <button type="submit" hidden></button>-->
+<!--        </form>-->
+<!--    </div>-->
+<!--</div>-->
+
+<div th:if="${message}" th:fragment="alert-message">
+    <script th:inline="javascript">
+        window.onload = () => {
+          const message = '[[${message}]]';
+<!--          message = message.replace("\"", "");-->
+          console.log(message.replace(/['"]+/g, ''));
+          console.log(message);
+
+          if(message) {
+				alert(message.replace(/['"]+/g, ''));
+			}
+        }
+      </script>
+</div>
+
+
+
+<!--<div th:fragment="board(board)">-->
+<!--    <div class="product__sidebar">-->
+<!--        <div class="product__sidebar__comment">-->
+<!--            <div class="section-title">-->
+<!--                <h4><a th:text="${board.boardName}" href="/board"></a></h4>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div th:each="child : ${board.children}">-->
+<!--        <div th:replace="~{fragments.html :: printChild(${child}, '&nbsp;')}"></div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<div th:fragment="printChild(board, text)">-->
+<!--    <div class="product__sidebar__comment__item__text" style="margin-top:30px">-->
+<!--        <h5>-->
+<!--            <a th:utext="${text} + ${board.boardName}" th:href="@{/board/sub(name=${board.boardName})}"></a>-->
+<!--            &lt;!&ndash;			<a th:href="@{/details?movieSeq={id}&title={id2}&docid={id3}(id=${recentReviewMovie.movieSeq}, id2=${recentReviewMovie.title}, id3=${recentReviewMovie.docid})}" th:text=${recentReviewMovie.title}>tempName2</a>&ndash;&gt;-->
+<!--        </h5>-->
+<!--    </div>-->
+<!--    <div th:each="child : ${board.children}">-->
+<!--        <div th:replace="~{fragments.html :: printChild(${child}, ${text}+'&nbsp;&nbsp;&nbsp;')}"></div>-->
+<!--    </div>-->
+<!--</div>-->
+
+
+</html>

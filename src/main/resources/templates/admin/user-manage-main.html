@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html lang="en">
+<head th:replace="~{/admin/admin-fragments.html :: head}"></head>
+
+<body class="inner_page tables_page">
+<div class="full_container">
+    <div class="inner_container">
+        <!-- Sidebar  -->
+        <nav th:replace="~{/admin/admin-fragments.html :: side-bar}"></nav>
+        <!-- end sidebar -->
+        <!-- right content -->
+        <div id="content">
+            <!-- topbar -->
+            <div th:replace="~{/admin/admin-fragments.html :: top-bar}"></div>
+            <!-- end topbar -->
+            <!-- dashboard inner -->
+            <div class="midde_cont">
+                <div class="container-fluid">
+                    <div class="row column_title">
+                        <div class="col-md-12">
+                            <div class="page_title">
+                                <h2>Tables</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- row -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="white_shd full margin_bottom_30">
+                                <div class="full graph_head">
+                                    <div class="heading1 margin_0">
+                                        <h2>User Manage</h2>
+                                    </div>
+                                    <div style="float:right;"></div>
+                                </div>
+                                <div class="table_section padding_infor_info">
+                                    <div class="table-responsive-sm">
+                                        <table class="table">
+                                            <thead class="thead-dark">
+                                            <tr>
+                                                <th style="text-align : center;">ID</th>
+                                                <th style="text-align : center;">EMAIl</th>
+                                                <th style="text-align : center;">NICKNAME</th>
+                                                <th style="text-align : center;">ROLE</th>
+                                                <th style="text-align : center;">TYPE</th>
+                                                <th style="text-align : center;">JOIN</th>
+                                                <th style="text-align : center;">LAST PASSWORD</th>
+                                                <th style="text-align : center;">관리</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <div th:each="user : ${users}">
+                                                <tr>
+                                                    <td style="text-align : center;" th:text="${user.id}">id</td>
+                                                    <td style="text-align : center;" th:text="${user.email}">Anna</td>
+                                                    <td style="text-align : center;" th:text="${user.nickname}">Anna</td>
+                                                    <td style="text-align : center;" th:text="${user.role}">Anna</td>
+                                                    <td style="text-align : center;" th:text="${user.type}">Anna</td>
+                                                    <td style="text-align : center;" th:text="${#temporals.format(user.joinDate, 'yyyy-MM-dd')}">Anna</td>
+                                                    <td style="text-align : center;" th:text="${#temporals.format(user.lastPasswordChangeDate, 'yyyy-MM-dd')}">Anna</td>
+
+                                                    <td style="text-align : center;">
+                                                        <div style="display:inline;">
+                                                                <span>
+                                                                    <form th:action="@{/admin/account/user-delete}" method="post" style="display:inline;">
+                                                                        <input type="hidden" name="id" th:value="${user.id}">
+                                                                        <input type="hidden" name="email" th:value="${user.email}">
+                                                                        <input type="hidden" name="nickname" th:value="${user.nickname}">
+                                                                        <button class="btn cur-p btn-outline-danger">삭제</button>
+                                                                    </form>
+                                                                    <a class="btn cur-p btn-outline-dark"
+                                                                       th:attr="onclick=|window.open('@{/admin/account/user-update?id={id} (id=${user.id})}','name','resizable=no width=600 height=500');return false|">관리</a>
+                                                                </span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </div>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- footer -->
+                <div class="container-fluid">
+                    <div class="footer">
+                        <p>Copyright © 2018 Designed by html.design. All rights reserved.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- end dashboard inner -->
+        </div>
+    </div>
+    <!-- model popup -->
+    <!-- The Modal -->
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Modal Heading</h4>
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                    Modal body..
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end model popup -->
+</div>
+<div th:replace="~{/admin/admin-fragments.html :: default-script}"></div>
+<div th:replace="~{/admin/admin-fragments.html :: alert-message}"></div>
+</body>
+</html>

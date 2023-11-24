@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace="~{fragments.html :: head}"></head>
+   <body class="inner_page login">
+      <div class="full_container">
+         <div class="container">
+            <div class="center verticle_center full_height">
+               <div class="login_section">
+                  <div class="logo_login">
+                     <div class="center">
+                        
+                     </div>
+                  </div>
+                  <div class="login_form">
+                     <form th:action="@{/change-nickname}" method="post">
+                        <fieldset>
+                            <div class="field">
+                                <input type="hidden" name="curNickname" placeholder="New nickname" th:value="${#authentication.principal.nickname}">
+                            </div>
+                           <div class="field">
+                              <label class="label_field">Nickname</label>
+                              <input type="text" name="newNickname" placeholder="New nickname">
+                           </div>
+                            <div class="field">
+                              <label class="label_field">Password</label>
+                              <input type="password" name="password" placeholder="Password" maxlength="4">
+                           </div>
+                            
+                           
+                           <div class="field margin_0">
+                              <label class="label_field hidden">hidden label</label>
+                              
+    <button class="main_bt">Sing In</button>
+    
+    
+                           </div>
+                           
+                           
+                        </fieldset>
+                     </form>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div th:replace="~{fragments.html :: non-sidebar-script}"></div>
+      <div th:replace="~{fragments.html :: alert-message}"></div>
+   
+
+</body></html>
