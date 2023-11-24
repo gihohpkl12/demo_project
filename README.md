@@ -6,7 +6,7 @@ KMDB Open API의 영화 정보를 기반으로 영화 정보 소개 사이트.
 ## 주의사항
 개인정보 (aws access key, naver oauth 정보, kmdb api key 등등 )를 보호하기 위해 application.properties는 git에 올리지 않았습니다.<br/>
 아래 정보를 입력해야 정상적으로 작동합니다. <br/>
-프로젝트 구동 사진 및 상세 설명은 /detail/DETAIL.md 참고하시기 바랍니다.
+프로젝트 구동 사진 및 상세 설명은 /detail을 참고하시기 바랍니다.
 
  - DB <br/>
 spring.datasource.url=jdbc:postgresql: <br/>
