@@ -54,7 +54,7 @@ public class AccountController {
 
     private final OAuthUserAccountService naverUserAccountService;
 
-    private final UserAccountSignUpAndInService defaultUserAccountSignUpAndInService;
+    private final UserAccountSignUpInService defaultUserAccountSignUpAndInService;
 
     private final UserAccountManageService defaultUserAccountManageService;
 

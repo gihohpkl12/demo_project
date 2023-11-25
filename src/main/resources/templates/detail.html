@@ -131,7 +131,7 @@
                                                                     <form th:action="@{/movie-review-enroll}" method="post" th:object="${movieReviewEnrollForm}">
                                                                         <fieldset>
                                                                             <div class="field">
-                                                                                <textarea type="text" name="reviewContent" id="reviewContent" placeholder=" Your Comment" maxlength="300" style="width:100%; height:120px;"></textarea>
+                                                                                <textarea type="text" name="reviewContent" id="reviewContent" placeholder=" Your Comment" maxlength="200" style="width:100%; height:120px;"></textarea>
 <!--                                                                                <input type="text" name="reviewContent" id="reviewContent" placeholder=" Your Comment" maxlength="300" style="width:95%; height:150px;">-->
                                                                                 <input type="hidden" id="movieSeq" name = "movieSeq" th:value="${movie.movieSeq}">
                                                                                 <input type="hidden" id="title" name = "title" th:value="${movie.title}">

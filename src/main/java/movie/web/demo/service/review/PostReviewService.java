@@ -39,7 +39,7 @@ public class PostReviewService implements ReviewService<PostReview> {
     @Override
     public void addReview(PostReviewEnrollForm postReviewEnrollForm, PostService postService) {
         Post post = postService.findPostById(postReviewEnrollForm.getId());
-        if (reviewValidator.addCheck(post, postReviewEnrollForm.getId())) {
+        if (reviewValidator.addCheck(post, postReviewEnrollForm.getId(), postReviewEnrollForm.getPostReviewContent().length())) {
             PostReview postReview = createPostReview(postReviewEnrollForm);
             postReview.setPost(post);
             postReviewRepository.save(postReview);
@@ -48,40 +48,12 @@ public class PostReviewService implements ReviewService<PostReview> {
 
     }
 
-    private boolean validateBeforeEnrollReview(PostReviewEnrollForm postReviewEnrollForm) {
-        if (!UserAccountService.isSameUserCheck(postReviewEnrollForm.getAccountId())) {
-            return false;
-        }
-        return true;
-    }
-
     @Override
     public void deleteReview(PostReviewDeleteForm postReviewDeleteForm) {
         Optional<PostReview> postReview = postReviewRepository.findById(postReviewDeleteForm.getId());
         if (reviewValidator.deleteCheck(postReview)) {
             postReviewRepository.delete(postReview.get());
         }
-    }
-
-    private PostReview validateBeforeDeleteReview(PostReviewDeleteForm postReviewDeleteForm) {
-        Optional<PostReview> postReview = postReviewRepository.findById(postReviewDeleteForm.getId());
-        if (!reviewValidator.deleteCheck(postReview)) {
-
-        }
-        if (!UserAccountService.isSameUserCheck(postReviewDeleteForm.getAccountId())) {
-            throw new AccountException("리뷰 작성자 정보와 현재 계정 정보가 일치하지 않습니다");
-        }
-
-
-        if (!postReview.isPresent()) {
-            throw new PostReviewException("해당 리뷰가 존재하지 않습니다");
-        }
-
-        if (!UserAccountService.isSameUserCheck(postReviewDeleteForm.getAccountId())) {
-            throw new PostReviewException("리뷰 작성자만 삭제할 수 있습니다");
-        }
-
-        return postReview.get();
     }
 
     @Override

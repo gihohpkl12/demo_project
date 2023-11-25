@@ -11,7 +11,7 @@ import movie.web.demo.form.AccountSignInForm;
 import movie.web.demo.form.AccountSignUpForm;
 import movie.web.demo.repository.AccountRepository;
 import movie.web.demo.service.account.UserAccountService;
-import movie.web.demo.service.account.UserAccountSignUpAndInService;
+import movie.web.demo.service.account.UserAccountSignUpInService;
 import movie.web.demo.service.token.redis.TokenManageService;
 import movie.web.demo.util.CookieUtil;
 import movie.web.demo.service.token.TokenService;
@@ -27,7 +27,7 @@ import java.util.Optional;
  */
 @Service
 @RequiredArgsConstructor
-public class DefaultUserAccountSignUpAndInService implements UserAccountSignUpAndInService {
+public class DefaultUserAccountSignUpInService implements UserAccountSignUpInService {
 
     private final AccountRepository accountRepository;
 

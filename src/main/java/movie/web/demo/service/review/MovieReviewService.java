@@ -33,7 +33,8 @@ public class MovieReviewService implements ReviewService<MovieReview> {
 
     @Override
     public void addReview(MovieReviewEnrollForm movieReviewEnrollForm) {
-        if (reviewValidator.addCheck(movieReviewEnrollForm.getAccountId())) {
+        if (reviewValidator.addCheck(movieReviewEnrollForm.getAccountId(), movieReviewEnrollForm.getReviewContent().length())) {
+            System.out.println("review length !! "+movieReviewEnrollForm.getReviewContent().length());
             movieReviewRepository.save(createReview(movieReviewEnrollForm));
         }
 
