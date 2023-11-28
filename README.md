@@ -61,6 +61,7 @@ spring.mail.properties.mail.smtp.starttls.enable=<br/>
  - java 17
  - spring boot 3.1.0
  - spring security 6.1.0
+ - Window 11
 
 ## 추가 Dependency 
  - spring security : 인증 인가
