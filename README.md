@@ -77,4 +77,4 @@ spring.mail.properties.mail.smtp.starttls.enable=<br/>
  - postgresql : DB 데이터 저장
  - aws s3 : 이미지 저장 목적
  - jpa : DB 연동
- - spring cache : 일부 데이터 캐싱 목적
+ 
