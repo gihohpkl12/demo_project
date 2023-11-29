@@ -39,7 +39,7 @@ public class PostReviewService implements ReviewService<PostReview> {
     @Override
     public void addReview(PostReviewEnrollForm postReviewEnrollForm, PostService postService) {
         Post post = postService.findPostById(postReviewEnrollForm.getId());
-        if (reviewValidator.addCheck(post, postReviewEnrollForm.getId(), postReviewEnrollForm.getPostReviewContent().length())) {
+        if (reviewValidator.addCheck(post, postReviewEnrollForm.getAccountId(), postReviewEnrollForm.getPostReviewContent().length())) {
             PostReview postReview = createPostReview(postReviewEnrollForm);
             postReview.setPost(post);
             postReviewRepository.save(postReview);

@@ -81,7 +81,9 @@ public interface UserAccountService {
     static boolean isSameUserCheck(Long accountId) {
         if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() != null) {
             Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            if (account.getId() == null || accountId != accountId) {
+
+            if (account.getId() == null || !account.getId().equals(accountId)) {
+                System.out.println(account.getId() + " ? "+accountId);
                 return false;
             }
         } else {

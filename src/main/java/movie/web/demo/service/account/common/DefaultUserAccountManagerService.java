@@ -83,6 +83,7 @@ public class DefaultUserAccountManagerService implements UserAccountManageServic
         }
     }
 
+    @Transactional
     public String findPassword(PasswordFindingForm passwordFindingForm, TokenManageService tokenManageService) {
         if (tokenManageService.validatePasswordFindingToken(passwordFindingForm.getToken(), passwordFindingForm.getEmail())) {
             try {
@@ -98,10 +99,11 @@ public class DefaultUserAccountManagerService implements UserAccountManageServic
     @Transactional
     private String resetPassword(PasswordFindingForm passwordFindingForm) {
         Optional<Account> account = findAccountByEmail(passwordFindingForm.getEmail());
-        String tempPassword = UUID.randomUUID().toString().substring(0, 4);
+//        String tempPassword = UUID.randomUUID().toString().substring(0, 4);
+        String resetPassword = Integer.toString((int)(Math.random() * 1000));
         if (account.isPresent()) {
-            account.get().setPassword(PasswordEncodeManager.encode(tempPassword));
-            return tempPassword;
+            account.get().setPassword(PasswordEncodeManager.encode(resetPassword));
+            return resetPassword;
         } else {
             throw new AccountException("해당 계정이 없습니다");
         }

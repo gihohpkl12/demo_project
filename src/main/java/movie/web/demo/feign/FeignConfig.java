@@ -1,4 +1,4 @@
-package movie.web.demo.config;
+package movie.web.demo.feign;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;

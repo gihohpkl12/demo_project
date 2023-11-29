@@ -43,13 +43,14 @@ public class PostValidator extends DefaultValidator {
             throw new PostException("해당 게시글이 없습니다");
         }
 
-        if (postMetaData.getAccountId() != id) {
+        if (!postMetaData.getAccountId().equals(id)) {
             throw new AccountException("해당 게시글의 작성자만 수정/삭제가 가능합니다");
         }
 
         if (!userCheck(id)) {
             throw new AccountException("해당 게시글의 작성자만 수정/삭제가 가능합니다");
         }
+
         return true;
     }
 
@@ -58,10 +59,7 @@ public class PostValidator extends DefaultValidator {
     }
 
     private boolean userCheck(Long id) {
-        if (UserAccountService.isSameUserCheck(id)) {
-            return true;
-        }
-        return false;
+        return UserAccountService.isSameUserCheck(id);
     }
 
 
