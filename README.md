@@ -8,7 +8,7 @@ KMDB Open API의 영화 정보를 기반으로 영화 정보 소개 사이트.
 (출처 : https://themewagon.com/themes/pluto-free-bootstrap-4-html5-admin-dashboard-template/ ) <br/>
 <br/>
 개인정보 (aws access key, naver oauth 정보, kmdb api key 등등 )를 보호하기 위해 application.properties는 git에 올리지 않았습니다.<br/>
-아래는 application.properties에 입력된 정보입니다<br/>
+아래는 application.properties에 입력 항목입니다<br/>
 프로젝트 구동 사진 및 상세 설명은 /detail을 참고하시기 바랍니다.
 
  - DB <br/>
