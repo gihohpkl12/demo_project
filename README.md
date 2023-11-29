@@ -72,7 +72,7 @@ spring.mail.properties.mail.smtp.starttls.enable=<br/>
  - redis : 인증 관련 토큰 저장용 NoSql
  - feign : rest api 편의성 목적
  - jwt : 인증 토큰
- - spring-validation : get, post 요청에 queryparameter, body 검증 목적
+ - spring-validation : 수행 로직 검증 목적
  - spring-cache : 자주 사용되는 데이터의 캐싱 목적
  - lombok : 편의성 목적
  - spring-mail : 인증 메일 전송
