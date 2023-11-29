@@ -99,7 +99,6 @@ public class DefaultUserAccountManagerService implements UserAccountManageServic
     @Transactional
     private String resetPassword(PasswordFindingForm passwordFindingForm) {
         Optional<Account> account = findAccountByEmail(passwordFindingForm.getEmail());
-//        String tempPassword = UUID.randomUUID().toString().substring(0, 4);
         String resetPassword = Integer.toString((int)(Math.random() * 1000));
         if (account.isPresent()) {
             account.get().setPassword(PasswordEncodeManager.encode(resetPassword));
