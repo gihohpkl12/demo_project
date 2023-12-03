@@ -10,7 +10,8 @@ public interface TokenManageService {
 
     boolean isExistRefreshToken(String token);
 
-    void saveRefreshToken(String token, Account account);
+    void saveRefreshToken(String accessToken, String refreshToken, Account account);
+    public void updateRefreshToken(String accessToken, String refreshToken);
 
     void saveLogoutToken(String token);
 

@@ -7,7 +7,8 @@ public class CookieUtil {
 
     public Cookie createCookie(String key, String value) {
         Cookie cookie = new Cookie(key, value);
-        cookie.setMaxAge(60 * 60 * 24);
+        cookie.setMaxAge(60 * 60 * 24 * 7);
+        cookie.setHttpOnly(true);
         cookie.setPath("/");
         return cookie;
     }
@@ -15,10 +16,10 @@ public class CookieUtil {
     public Cookie createCookie(String key, String value, int period) {
         Cookie cookie = new Cookie(key, value);
         cookie.setMaxAge(period);
+        cookie.setHttpOnly(true);
         cookie.setPath("/");
         return cookie;
     }
-
 
     public void setCookie(HttpServletResponse response, String key, String value) {
         response.addCookie(createCookie(key, value));

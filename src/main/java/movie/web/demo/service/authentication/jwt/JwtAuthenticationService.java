@@ -1,10 +1,15 @@
 package movie.web.demo.service.authentication.jwt;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import movie.web.demo.domain.account.Account;
 import movie.web.demo.domain.redis.RefreshToken;
+import movie.web.demo.exception.AccountException;
+import movie.web.demo.exception.TokenException;
 import movie.web.demo.service.authentication.AuthenticationService;
 import movie.web.demo.service.token.redis.TokenManageService;
 import movie.web.demo.util.CookieUtil;
@@ -57,29 +62,33 @@ public class JwtAuthenticationService implements AuthenticationService {
      * @param tokenManageService
      * @return
      */
-    private boolean authenticateByRefreshToken(HttpServletRequest request, TokenService tokenService, TokenManageService tokenManageService) {
+    private boolean authenticateByRefreshToken(HttpServletRequest request,HttpServletResponse response, TokenService tokenService, TokenManageService tokenManageService, String accessToken) {
+        System.out.println("here10");
         String refreshToken = tokenService.getToken(request, "refresh_token");
-        if (!tokenManageService.isExistRefreshToken(refreshToken)) {
-            return false;
+        if (refreshToken != null) {
+            Optional<RefreshToken> getRefreshToken = tokenManageService.getRefreshToken(refreshToken);
+            Account extractAccount = tokenService.extractToken(refreshToken);
+            if (!getRefreshToken.isPresent()) {
+                return false;
+            }
+
+            if (!getRefreshToken.get().getAccessToken().equals(accessToken)) {
+                tokenManageService.deleteRefreshToken(getRefreshToken.get().getRefreshToken());
+                CookieUtil cookieUtil = new CookieUtil();
+                cookieUtil.deleteCookie(response, "refresh_token");
+                cookieUtil.deleteCookie(response, "access_token");
+                return false;
+            }
+
+            if(!getRefreshToken.get().getEmail().equals(extractAccount.getEmail()) ||
+                    !getRefreshToken.get().getRole().equals(extractAccount.getRole())) {
+                return false;
+            }
+
+            return true;
         }
 
-        Account extractAccount = tokenService.extractToken(refreshToken);
-        Optional<RefreshToken> getRefreshToken = tokenManageService.getRefreshToken(refreshToken);
-        if (extractAccount == null) {
-            return false;
-        }
-        if(!getRefreshToken.isPresent()) {
-            return false;
-        }
-
-        if(!getRefreshToken.get().getEmail().equals(extractAccount.getEmail()) ||
-                !getRefreshToken.get().getRole().equals(extractAccount.getRole())) {
-            return false;
-        }
-
-        setSecurityAuthenticationToken(extractAccount);
-
-        return true;
+        return false;
     }
 
     /**
@@ -102,34 +111,39 @@ public class JwtAuthenticationService implements AuthenticationService {
      * @return
      */
     public boolean authenticate(HttpServletRequest request, HttpServletResponse response, TokenService tokenService, TokenManageService tokenManageService) {
-        boolean result = true;
-        Account extractAccount = null;
-
         String accessToken = tokenService.getToken(request, "access_token");
-        if (accessToken != null && isLogout(accessToken, tokenManageService)) {
-            return false;
-        }
-
         if (accessToken != null) {
-            extractAccount = tokenService.extractToken(accessToken);
-            if (extractAccount == null) {
-                result = false;
+            if (isLogout(accessToken, tokenManageService)) {
+                return false;
             }
-        } else {
-            result = false;
+
+            try {
+                Account extractAccount = tokenService.extractToken(accessToken);
+                setSecurityAuthenticationToken(extractAccount);
+                return true;
+            } catch (ExpiredJwtException e) {
+                if (authenticateByRefreshToken(request, response, tokenService, tokenManageService, accessToken)) {
+                    String refreshToken = tokenService.getToken(request, "refresh_token");
+                    CookieUtil cookieUtil = new CookieUtil();
+                    String newAccessToken = tokenService.createAccessTokenByRefreshToken(tokenService.getToken(request, "refresh_token"));
+                    cookieUtil.setCookie(response, "access_token", newAccessToken);
+                    tokenManageService.updateRefreshToken(newAccessToken, refreshToken);
+                    setSecurityAuthenticationToken(tokenService.extractToken(newAccessToken));
+                    return true;
+                }
+                return false;
+            } catch (TokenException e) {
+                System.out.println("토큰이 없음");
+                return false;
+            } catch (AccountException | SecurityException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException e) {
+                System.out.println("잘못된 토큰");
+                return false;
+            } catch (Exception e) {
+                return false;
+            }
         }
 
-        // access_token으로 인증에 실패한 경우
-        if (!result) {
-            if (authenticateByRefreshToken(request, tokenService, tokenManageService)) {
-                CookieUtil cookieUtil = new CookieUtil();
-                cookieUtil.setCookie(response, "access_token", tokenService.createAccessTokenByRefreshToken(tokenService.getToken(request, "refresh_token")));
-            }
-        } else {
-            setSecurityAuthenticationToken(extractAccount);
-        }
-
-        return result;
+        return false;
     }
 }
 /*

@@ -11,6 +11,7 @@ import movie.web.demo.repository.PasswordFindingRepository;
 import movie.web.demo.repository.RefreshTokenRepository;
 import org.springframework.stereotype.Service;
 
+import java.sql.Ref;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -45,8 +46,17 @@ public class RedisTokenManagerService implements TokenManageService {
         return refreshToken;
     }
     @Override
-    public void saveRefreshToken(String token, Account account) {
-        refreshTokenRepository.save(createRefreshToken(token, account));
+    public void saveRefreshToken(String accessToken, String refreshToken, Account account) {
+        refreshTokenRepository.save(createRefreshToken(accessToken, refreshToken, account));
+    }
+
+    @Override
+    public void updateRefreshToken(String accessToken, String refreshToken) {
+        Optional<RefreshToken> getRefreshToken = refreshTokenRepository.findById(refreshToken);
+        if (getRefreshToken.isPresent()) {
+            getRefreshToken.get().setAccessToken(accessToken);
+            refreshTokenRepository.save(getRefreshToken.get());
+        }
     }
     @Override
     public void saveLogoutToken(String token) {
@@ -68,13 +78,16 @@ public class RedisTokenManagerService implements TokenManageService {
         return logoutToken;
     }
 
-    private RefreshToken createRefreshToken(String token, Account account) {
-        RefreshToken refreshToken = new RefreshToken();
-        refreshToken.setRefreshToken(token);
-        refreshToken.setNickname(account.getNickname());
-        refreshToken.setRole(account.getRole());
-        refreshToken.setEmail(account.getEmail());
-        return  refreshToken;
+    private RefreshToken createRefreshToken(String accessToken, String refreshToken, Account account) {
+        RefreshToken saveRefreshToken = new RefreshToken();
+        saveRefreshToken.setAccessToken(accessToken);
+        saveRefreshToken.setRefreshToken(refreshToken);
+        saveRefreshToken.setNickname(account.getNickname());
+        saveRefreshToken.setRole(account.getRole());
+        saveRefreshToken.setEmail(account.getEmail());
+        saveRefreshToken.setAccountId(account.getId());
+
+        return  saveRefreshToken;
     }
 
     public String savePasswordFindingToken(String email) {

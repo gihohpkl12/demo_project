@@ -97,35 +97,20 @@ public class JWTTokenService implements TokenService {
     @Override
     public Account extractToken(String token) {
         Account result = new Account();
-        try {
-            Claims claims = Jwts.parser()
-                    .setSigningKey(secretKey)
-                    .parseClaimsJws(token)
-                    .getBody();
+        Claims claims = Jwts.parser()
+                .setSigningKey(secretKey)
+                .parseClaimsJws(token)
+                .getBody();
 
-            Long id = claims.get("id", Long.class);
-            String email = claims.get("email", String.class);
-            String nickname = claims.get("nickname", String.class);
-            String role = claims.get("role", String.class);
+        Long id = claims.get("id", Long.class);
+        String email = claims.get("email", String.class);
+        String nickname = claims.get("nickname", String.class);
+        String role = claims.get("role", String.class);
 
-            result.setId(id);
-            result.setEmail(email);
-            result.setNickname(nickname);
-            result.setRole(role);
-
-        } catch (TokenException e) {
-            System.out.println("토큰이 없음");
-            return null;
-        } catch (AccountException | SecurityException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException e) {
-            System.out.println("잘못된 토큰");
-            return null;
-        } catch (ExpiredJwtException e) {
-            System.out.println("만료된 토큰");
-            return null;
-        } catch (Exception e) {
-            System.out.println("확인이 필요한 예외");
-            return null;
-        }
+        result.setId(id);
+        result.setEmail(email);
+        result.setNickname(nickname);
+        result.setRole(role);
 
         return result;
     }

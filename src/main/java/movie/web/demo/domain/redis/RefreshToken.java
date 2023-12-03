@@ -20,6 +20,10 @@ public class RefreshToken {
 
     private String email;
 
+    private Long accountId;
+
+    private String accessToken;
+
     private String role;
 
     @TimeToLive

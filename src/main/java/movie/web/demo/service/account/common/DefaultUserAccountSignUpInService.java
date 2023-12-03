@@ -148,7 +148,7 @@ public class DefaultUserAccountSignUpInService implements UserAccountSignUpInSer
         }
 
         String[] tokens = setCookie(tokenService, account, response);
-        saveLoginInfo(tokenManageService, tokens[1], account.get());
+        saveLoginInfo(tokenManageService, tokens, account.get());
     }
 
     /**
@@ -170,17 +170,16 @@ public class DefaultUserAccountSignUpInService implements UserAccountSignUpInSer
             throw new AccountException("계정 종류가 다릅니다.");
         }
         String[] tokens = setCookie(tokenService, account, response);
-        saveLoginInfo(tokenManageService, tokens[1], account.get());
+        saveLoginInfo(tokenManageService, tokens, account.get());
     }
 
     /**
      * 로그인 후에 refresh token을 redis에 저장
      * @param tokenManageService
-     * @param token
      * @param account
      */
-    private void saveLoginInfo(TokenManageService tokenManageService, String token, Account account) {
-        tokenManageService.saveRefreshToken(token, account);
+    private void saveLoginInfo(TokenManageService tokenManageService, String[] tokens, Account account) {
+        tokenManageService.saveRefreshToken(tokens[0], tokens[1], account);
     }
 
     /**
